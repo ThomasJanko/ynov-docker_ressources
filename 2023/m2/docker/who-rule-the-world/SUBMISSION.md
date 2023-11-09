@@ -223,8 +223,8 @@ docker tag who-rule-the-world-worker:latest localhost:5000/worker
 docker push localhost:5000/worker
 ```
 ```bash
-docker tag who-rule-the-world-seed-data:latest localhost:5000/seed-data
-docker push localhost:5000/seed-data
+docker tag who-rule-the-world-vote:latest localhost:5000/vote
+docker push localhost:5000/vote
 ```
 ```bash
 docker tag who-rule-the-world-seed-data:latest localhost:5000/seed-data
