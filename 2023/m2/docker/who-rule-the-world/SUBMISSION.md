@@ -217,4 +217,20 @@ Et voici le résultat de la commande :
  => => writing image sha256:3d5b93132cff171467b19dd04ece29c239ed2e68e1761b3e1fa6b09192e1122b                                                           0.0s
  => => naming to docker.io/library/who-rule-the-world-worker
 ```
-
+Nous allons ensuite tagger les images dans le registre:
+```bash
+docker tag who-rule-the-world-worker:latest localhost:5000/worker
+docker push localhost:5000/worker
+```
+```bash
+docker tag who-rule-the-world-seed-data:latest localhost:5000/seed-data
+docker push localhost:5000/seed-data
+```
+```bash
+docker tag who-rule-the-world-seed-data:latest localhost:5000/seed-data
+docker push localhost:5000/seed-data
+```
+```bash
+docker tag who-rule-the-world-result:latest localhost:5000/result
+docker push localhost:5000/result
+```
