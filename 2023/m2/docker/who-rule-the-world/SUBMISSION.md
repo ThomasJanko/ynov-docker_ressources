@@ -1,4 +1,4 @@
-# **Thomas Jankowski**
-## *Koceila ARHAB*
+# Thomas Jankowski
+## Koceila ARHAB
 ### Léo MAGNANT
 
