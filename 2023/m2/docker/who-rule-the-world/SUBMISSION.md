@@ -279,10 +279,14 @@ d6fd6fd1f004   localhost:5000/seed-data                   "/bin/sh -c /seed/ge�
 feda18372643   localhost:5000/vote                        "gunicorn app:app -b…"   4 minutes ago   Up 3 minutes    0.0.0.0:5001->80/tcp, :::5001->80/tcp            who-rule-the-world-vote-1
 ```
 Nous allons rediriger les ports : 
+
 ![image](https://github.com/ThomasJanko/ynov-docker_ressources/assets/90394045/258b5e9a-990b-4e29-9dfe-09b9e47ecfe9)
+
 sur le port 5001 , le vote :
+
 ![image](https://github.com/ThomasJanko/ynov-docker_ressources/assets/90394045/6bf89885-02d2-495b-9bb2-3e5eb06d5e8e)
 
 sur le port 5002 , le résultat :
+
 ![image](https://github.com/ThomasJanko/ynov-docker_ressources/assets/90394045/d9ff2e94-cf7c-4b3e-922f-034fa1f4caf2)
 
