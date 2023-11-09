@@ -60,6 +60,96 @@ networks:
   registry-network:
     external: true
 ```
+
+ATTENTION: Etant donné que la consigne a été modifiée, veuillez prendre en compte le docker-compose.build.yml suivant:
+```yaml
+version: '3'
+services:
+  worker:
+    build:
+      context: ./worker
+    depends_on:
+      redis:
+        condition: service_healthy
+      db:
+        condition: service_healthy
+    networks:
+      - back-tier
+
+  vote:
+    build:
+      context: ./vote
+    volumes:
+      - ./vote:/usr/local/app
+    ports:
+      - "5002:80"
+    networks:
+      - front-tier
+      - back-tier
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost"]
+      interval: 15s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+
+  seed-data:
+    build:
+      context: ./seed-data
+    depends_on:
+      vote:
+        condition: service_healthy
+    restart: "no"
+    networks:
+      - front-tier
+
+  result:
+    build:
+      context: ./result
+    depends_on:
+      db:
+        condition: service_healthy
+    volumes:
+      - ./result:/usr/local/app
+    ports:
+      - "5001:80"
+      - "127.0.0.1:9229:9229"
+    networks:
+      - front-tier
+
+  db:
+    image: postgres:15-alpine
+    volumes:
+      - "db-data:/var/lib/postgresql/data"
+      - "./healthchecks:/healthchecks"
+    healthcheck:
+      test: /healthchecks/postgres.sh
+      interval: "5s"
+    networks:
+      - back-tier
+
+  redis:
+    image: redis
+    networks:
+      - back-tier
+    volumes:
+      - "./healthchecks:/healthchecks"
+    healthcheck:
+      test: /healthchecks/redis.sh
+      interval: "5s"
+
+networks:
+  front-tier:
+  back-tier:
+  registry-network:
+    external: true
+
+volumes:
+  db-data:
+    external: false
+```
+
+
 Nous allons composer ce fichier yaml à l'aide de la commande :
 ```bash
 docker compose -f docker-compose.build.yml build
@@ -254,93 +344,7 @@ services:
     image: localhost:5000/worker
 ```
 
-ATTENTION: Etant donné que la consigne a été modifiée, veuillez prendre en compte le docker-compose.build.yml suivant:
-```
-version: '3'
-services:
-  worker:
-    build:
-      context: ./worker
-    depends_on:
-      redis:
-        condition: service_healthy
-      db:
-        condition: service_healthy
-    networks:
-      - back-tier
 
-  vote:
-    build:
-      context: ./vote
-    volumes:
-      - ./vote:/usr/local/app
-    ports:
-      - "5002:80"
-    networks:
-      - front-tier
-      - back-tier
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost"]
-      interval: 15s
-      timeout: 5s
-      retries: 3
-      start_period: 10s
-
-  seed-data:
-    build:
-      context: ./seed-data
-    depends_on:
-      vote:
-        condition: service_healthy
-    restart: "no"
-    networks:
-      - front-tier
-
-  result:
-    build:
-      context: ./result
-    depends_on:
-      db:
-        condition: service_healthy
-    volumes:
-      - ./result:/usr/local/app
-    ports:
-      - "5001:80"
-      - "127.0.0.1:9229:9229"
-    networks:
-      - front-tier
-
-  db:
-    image: postgres:15-alpine
-    volumes:
-      - "db-data:/var/lib/postgresql/data"
-      - "./healthchecks:/healthchecks"
-    healthcheck:
-      test: /healthchecks/postgres.sh
-      interval: "5s"
-    networks:
-      - back-tier
-
-  redis:
-    image: redis
-    networks:
-      - back-tier
-    volumes:
-      - "./healthchecks:/healthchecks"
-    healthcheck:
-      test: /healthchecks/redis.sh
-      interval: "5s"
-
-networks:
-  front-tier:
-  back-tier:
-  registry-network:
-    external: true
-
-volumes:
-  db-data:
-    external: false
-```
 Nous allons ensuite composer le fichier compose.yml à l'aide de la commande:
 ```bash
 docker compose up -d
