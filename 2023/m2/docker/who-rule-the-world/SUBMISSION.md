@@ -31,34 +31,34 @@ nano Dockerfile
 ```
 Nous allons build les images à partir du fichier:
 docker-compose.build.yml
-<pre style="background-color: #f4f4f4; padding: 10px; font-family: 'Courier New', monospace; font-size: 14px; color: #333;">
+```yaml
 # Contenu du docker-compose.build.yml
-<span style="color: #0074D9;">version:</span> <span style="color: #666666;">'3'</span>
-<span style="color: #0074D9;">services:</span>
-  <span style="color: #0074D9;">worker:</span>
-    <span style="color: #666666;">build:</span>
-      <span style="color: #666666;">context:</span> <span style="color: #0066cc;">./worker</span>
-    <span style="color: #666666;">networks:</span>
-      - <span style="color: #0066cc;">registry-network</span>
-  <span style="color: #0074D9;">vote:</span>
-    <span style="color: #666666;">build:</span>
-      <span style="color: #666666;">context:</span> <span style="color: #0066cc;">./vote</span>
-    <span style="color: #666666;">networks:</span>
-      - <span style="color: #0066cc;">registry-network</span>
-  <span style="color: #0074D9;">seed-data:</span>
-    <span style="color: #666666;">build:</span>
-      <span style="color: #666666;">context:</span> <span style="color: #0066cc;">./seed-data</span>
-    <span style="color: #666666;">networks:</span>
-      - <span style="color: #0066cc;">registry-network</span>
-  <span style="color: #0074D9;">result:</span>
-    <span style="color: #666666;">build:</span>
-      <span style="color: #666666;">context:</span> <span style="color: #0066cc;">./result</span>
-    <span style="color: #666666;">networks:</span>
-      - <span style="color: #0066cc;">registry-network</span>
+version: '3'
+services:
+  worker:
+    build:
+      context: ./worker
+    networks:
+      - registry-network
+  vote:
+    build:
+      context: ./vote
+    networks:
+      - registry-network
+  seed-data:
+    build:
+      context: ./seed-data
+    networks:
+      - registry-network
+  result:
+    build:
+      context: ./result
+    networks:
+      - registry-network
 
-<span style="color: #0074D9;">networks:</span>
-  <span style="color: #666666;">registry-network:</span>
-    <span style="color: #666666;">external:</span> <span style="color: #666666;">true</span>
-</pre>
+networks:
+  registry-network:
+    external: true
+```
 
 
