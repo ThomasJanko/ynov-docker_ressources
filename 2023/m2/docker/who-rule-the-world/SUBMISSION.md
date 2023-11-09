@@ -234,3 +234,6 @@ docker push localhost:5000/seed-data
 docker tag who-rule-the-world-result:latest localhost:5000/result
 docker push localhost:5000/result
 ```
+![image](https://github.com/ThomasJanko/ynov-docker_ressources/assets/90394045/c887033c-eb43-47e5-9828-cc019bf14399)
+![image](https://github.com/ThomasJanko/ynov-docker_ressources/assets/90394045/b8154e6a-cf51-4910-b6cd-604ed919015a)
+
