@@ -236,4 +236,45 @@ docker push localhost:5000/result
 ```
 ![image](https://github.com/ThomasJanko/ynov-docker_ressources/assets/90394045/c887033c-eb43-47e5-9828-cc019bf14399)
 ![image](https://github.com/ThomasJanko/ynov-docker_ressources/assets/90394045/b8154e6a-cf51-4910-b6cd-604ed919015a)
-
+Nous allons créer un fichier compose.yml à la racine du projet
+```yaml
+version: '3'
+services:
+  vote:
+    image: localhost:5000/vote
+    ports:
+      - "5001:80"
+  result:
+    image: localhost:5000/result
+    ports:
+      - "5002:80"
+  seed-data:
+    image: localhost:5000/seed-data
+  worker:
+    image: localhost:5000/worker
+```
+Nous allons ensuite composer le fichier compose.yml à l'aide de la commande:
+```bash
+docker compose up -d
+```
+et le résultat de la commande :
+```bash
+[+] Running 5/5
+ ✔ Network who-rule-the-world_default        Created                                                                                                   0.2s
+ ✔ Container who-rule-the-world-result-1     Started                                                                                                   0.4s
+ ✔ Container who-rule-the-world-seed-data-1  Started                                                                                                   0.4s
+ ✔ Container who-rule-the-world-worker-1     Started                                                                                                   0.4s
+ ✔ Container who-rule-the-world-vote-1       Started
+```
+Ensuite nous allons regarder les conteneurs qui tournent :
+```bash
+docker ps
+CONTAINER ID   IMAGE                                      COMMAND                  CREATED         STATUS          PORTS
+        NAMES
+64173d776546   localhost:5000/worker                      "dotnet Worker.dll"      4 minutes ago   Up 3 minutes
+        who-rule-the-world-worker-1
+089f1f33e7c1   localhost:5000/result                      "/usr/bin/tini -- no…"   4 minutes ago   Up 3 minutes    0.0.0.0:5002->80/tcp, :::5002->80/tcp            who-rule-the-world-result-1
+d6fd6fd1f004   localhost:5000/seed-data                   "/bin/sh -c /seed/ge…"   4 minutes ago   Up 2 seconds
+        who-rule-the-world-seed-data-1
+feda18372643   localhost:5000/vote                        "gunicorn app:app -b…"   4 minutes ago   Up 3 minutes    0.0.0.0:5001->80/tcp, :::5001->80/tcp            who-rule-the-world-vote-1
+```
